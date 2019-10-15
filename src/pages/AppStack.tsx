@@ -1,15 +1,30 @@
-import { IonIcon, IonLabel, IonPage, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import {
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+} from '@ionic/react';
+import {
+  calendar,
+  contacts,
+  informationCircle,
+  map,
+  people as employees,
+} from 'ionicons/icons';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router';
 import { actions, RootState } from '../store';
 import About from './About';
+import Employees from './Employees';
 import MapView from './Map';
 import SchedulePage from './SchedulePage';
 import SessionDetail from './SessionDetail';
 import SpeakerDetail from './SpeakerDetail';
 import SpeakerList from './SpeakerList';
-import { calendar, contacts, map, informationCircle } from 'ionicons/icons';
 
 type AppStackProps = typeof mapDispatchToProps;
 class AppStack extends React.Component<AppStackProps> {
@@ -27,12 +42,27 @@ class AppStack extends React.Component<AppStackProps> {
         <IonTabs>
           <IonRouterOutlet>
             <Route exact path="/" render={() => <Redirect to="/schedule" />} />
-            <Route path="/:tab(schedule)" component={SchedulePage} exact={true} />
-            <Route path="/:tab(speakers)" component={SpeakerList} exact={true} />
-            <Route path="/:tab(speakers)/speaker/:id" component={SpeakerDetail} />
-            <Route path="/:tab(schedule|speakers)/sessions/:id" component={SessionDetail} />
+            <Route
+              path="/:tab(schedule)"
+              component={SchedulePage}
+              exact={true}
+            />
+            <Route
+              path="/:tab(speakers)"
+              component={SpeakerList}
+              exact={true}
+            />
+            <Route
+              path="/:tab(speakers)/speaker/:id"
+              component={SpeakerDetail}
+            />
+            <Route
+              path="/:tab(schedule|speakers)/sessions/:id"
+              component={SessionDetail}
+            />
             <Route path="/:tab(map)" component={MapView} />
             <Route path="/:tab(about)" component={About} />
+            <Route path="/:tab(employees)" component={Employees} />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="schedule" href="/schedule">
@@ -51,6 +81,10 @@ class AppStack extends React.Component<AppStackProps> {
               <IonIcon icon={informationCircle} />
               <IonLabel>About</IonLabel>
             </IonTabButton>
+            <IonTabButton tab="employees" href="/employees">
+              <IonIcon icon={employees} />
+              <IonLabel>Employees</IonLabel>
+            </IonTabButton>
           </IonTabBar>
         </IonTabs>
       </IonPage>
@@ -63,10 +97,10 @@ const mapStateToProps = (state: RootState) => ({});
 const mapDispatchToProps = {
   updateLocations: () => actions.locations.updateLocations(),
   updateSessions: () => actions.sessions.updateSessions(),
-  updateSpeakers: () => actions.speakers.updateSpeakers()
+  updateSpeakers: () => actions.speakers.updateSpeakers(),
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(AppStack);
